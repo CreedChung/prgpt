@@ -1,3 +1,13 @@
+// Language type
+export type Language = 'zh-CN' | 'en' | 'ja'
+
+// API Configuration interface
+export interface ApiConfig {
+  baseURL: string
+  apiKey: string
+  model: string
+}
+
 // PR Details interface
 export interface PrDetails {
   title: string

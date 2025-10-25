@@ -3,8 +3,10 @@ import React from "react"
 
 // import GenerateButton from "./GenerateButton"
 import GenerateButton from "./GenerateButton"
+import LanguageSelector from "./LanguageSelector"
 import PrResult from "./PrResult"
 import StarOnGithubBtn from "./StarOnGithubBtn"
+import type { Language } from "~types"
 
 interface PrDetails {
   title: string
@@ -16,13 +18,17 @@ interface GithubPrContentProps {
   isLoading: boolean
   prDetails: PrDetails
   onGenerate: () => void
+  selectedLanguage: Language
+  onLanguageChange: (language: Language) => void
 }
 
 const GithubPrContent: React.FC<GithubPrContentProps> = ({
   isGenerated,
   isLoading,
   prDetails,
-  onGenerate
+  onGenerate,
+  selectedLanguage,
+  onLanguageChange
 }) => {
   return (
     <div className="flex flex-col h-full !z-10">
@@ -37,7 +43,11 @@ const GithubPrContent: React.FC<GithubPrContentProps> = ({
       </div>
 
       {!isGenerated ? (
-        <div className="flex flex-col items-center justify-center py-8">
+        <div className="flex flex-col py-8">
+          <LanguageSelector
+            selectedLanguage={selectedLanguage}
+            onLanguageChange={onLanguageChange}
+          />
           <div className="mb-6 text-center">
             <svg
               className="w-16 h-16 mx-auto mb-3 text-gray-400 dark:text-gray-600"
@@ -57,10 +67,12 @@ const GithubPrContent: React.FC<GithubPrContentProps> = ({
             </p>
           </div>
 
-          <div className="mb-2">
-            <StarOnGithubBtn />
+          <div className="flex flex-col items-center">
+            <div className="mb-2">
+              <StarOnGithubBtn />
+            </div>
+            <GenerateButton onClick={onGenerate} isLoading={isLoading} />
           </div>
-          <GenerateButton onClick={onGenerate} isLoading={isLoading} />
         </div>
       ) : (
         <PrResult />
