@@ -1,11 +1,22 @@
-// Language type
-export type Language = 'zh-CN' | 'en' | 'ja'
+// PR Language type (for PR generation)
+export type Language = 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko'
+
+// System UI Language type (for interface display)
+export type SystemLanguage = 'zh-CN' | 'zh-TW' | 'en' | 'ja' | 'ko'
 
 // API Configuration interface
 export interface ApiConfig {
+  id: string
+  name: string
   baseURL: string
   apiKey: string
   model: string
+}
+
+// Multiple API Configurations storage
+export interface ApiConfigStorage {
+  configs: ApiConfig[]
+  activeConfigId: string | null
 }
 
 // PR Details interface

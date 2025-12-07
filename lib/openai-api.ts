@@ -11,8 +11,10 @@ interface GeneratePrParams {
 
 const languagePrompts: Record<Language, string> = {
   "zh-CN": "请使用简体中文",
+  "zh-TW": "請使用繁體中文",
   "en": "Please use English",
-  "ja": "日本語を使用してください"
+  "ja": "日本語を使用してください",
+  "ko": "한국어를 사용해주세요"
 }
 
 export const generatePrWithOpenAI = async ({
@@ -23,7 +25,7 @@ export const generatePrWithOpenAI = async ({
   config
 }: GeneratePrParams): Promise<{ title: string; description: string }> => {
   const languageInstruction = languagePrompts[language]
-  
+
   const systemPrompt = `你是一个专业的 GitHub PR 助手。${languageInstruction}生成清晰、专业的 PR 标题和描述。
 
 要求：
@@ -77,7 +79,7 @@ ${currentUrl ? `URL: ${currentUrl}` : ""}
     }
 
     const result = JSON.parse(content)
-    
+
     return {
       title: result.title || "PR Title",
       description: result.description || "No description provided"

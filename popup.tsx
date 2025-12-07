@@ -16,7 +16,8 @@ import {
   fillPrForm
 } from "~lib/helpers"
 import { generatePrWithOpenAI } from "~lib/openai-api"
-import type { Language } from "~types"
+import type { Language, SystemLanguage } from "~types"
+import { getSystemLanguage, getTranslation } from "~lib/i18n"
 
 interface PrDetails {
   title: string
@@ -33,13 +34,23 @@ function IndexPopup(): JSX.Element {
   const [isGenerated, setIsGenerated] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [selectedLanguage, setSelectedLanguage] = useState<Language>("zh-CN")
+  const [systemLanguage, setSystemLanguage] = useState<SystemLanguage>("zh-CN")
   const [showSettings, setShowSettings] = useState<boolean>(false)
   const [configValid, setConfigValid] = useState<boolean>(false)
+
+  // Get translations based on current system language
+  const t = getTranslation(systemLanguage)
 
   useEffect(() => {
     checkCurrentTab()
     checkApiConfig()
+    loadSystemLanguage()
   }, [])
+
+  const loadSystemLanguage = async () => {
+    const lang = await getSystemLanguage()
+    setSystemLanguage(lang)
+  }
 
   const checkApiConfig = async (): Promise<void> => {
     const config = await getApiConfig()
@@ -63,8 +74,8 @@ function IndexPopup(): JSX.Element {
     const config = await getApiConfig()
     if (!validateApiConfig(config)) {
       setPrDetails({
-        title: "配置错误",
-        description: "请先配置 API 设置（点击右上角设置按钮）"
+        title: t.configError,
+        description: t.configErrorDesc
       })
       setIsGenerated(true)
       return
@@ -85,16 +96,16 @@ function IndexPopup(): JSX.Element {
         )
       } else {
         setPrDetails({
-          title: "无法生成标题",
-          description: "未找到提交信息或无法访问页面内容"
+          title: t.generationFailed,
+          description: t.noCommits
         })
       }
     } catch (error) {
       console.error("Error generating PR:", error)
-      const errorMessage = error instanceof Error ? error.message : "未知错误"
+      const errorMessage = error instanceof Error ? error.message : "Unknown error"
       setPrDetails({
-        title: "生成 PR 失败",
-        description: `发生错误: ${errorMessage}\n\n请检查你的 API 配置是否正确。`
+        title: t.generationFailed,
+        description: `${t.generationFailed}: ${errorMessage}\n\n${t.configErrorDesc}`
       })
     } finally {
       setIsGenerated(true)
@@ -132,7 +143,7 @@ function IndexPopup(): JSX.Element {
 
   return (
     <ThemeProvider>
-      <div className="relative h-full w-full bg-[#000000] ">
+      <div className="relative h-full w-full bg-[var(--color-bg)]">
         <div className="app-container min-h-[400px] !z-10">
           <Header />
           
@@ -140,23 +151,23 @@ function IndexPopup(): JSX.Element {
           <div className="absolute top-4 right-4 z-20">
             <button
               onClick={() => setShowSettings(true)}
-              className="p-2 rounded-lg bg-gray-800 hover:bg-gray-700 text-gray-300 transition-colors"
-              title="API 设置">
+              className="p-2 brutal-btn"
+              title={t.apiSettings}>
               <svg
                 className="w-5 h-5"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24">
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
+                  strokeWidth={3}
                   d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"
                 />
                 <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
+                  strokeLinecap="square"
+                  strokeLinejoin="miter"
+                  strokeWidth={3}
                   d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                 />
               </svg>
@@ -165,7 +176,7 @@ function IndexPopup(): JSX.Element {
 
           <div className="">
             {!isPrPage ? (
-              <NotPrPageWarning />
+              <NotPrPageWarning t={t} />
             ) : (
               <GithubPrContent
                 isGenerated={isGenerated}
@@ -174,14 +185,13 @@ function IndexPopup(): JSX.Element {
                 onGenerate={generatePr}
                 selectedLanguage={selectedLanguage}
                 onLanguageChange={setSelectedLanguage}
+                t={t}
               />
             )}
           </div>
 
           {isLoading && <LoadingOverlay />}
         </div>
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#ffffff33_1px,transparent_1px),linear-gradient(to_bottom,#ffffff33_1px,transparent_1px)] bg-[size:6rem_4rem] "></div>
-        <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(45deg,_rgba(255,255,255,0)_41%,_rgba(12,2,40,1)_95%)]"></div>
         
         {showSettings && (
           <ApiSettings
@@ -189,6 +199,8 @@ function IndexPopup(): JSX.Element {
             onSave={() => {
               checkApiConfig()
             }}
+            onLanguageChange={(lang) => setSystemLanguage(lang)}
+            t={t}
           />
         )}
       </div>
@@ -197,3 +209,4 @@ function IndexPopup(): JSX.Element {
 }
 
 export default IndexPopup
+

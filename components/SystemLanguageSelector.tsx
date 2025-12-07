@@ -1,20 +1,20 @@
-// src/components/LanguageSelector.tsx
+// src/components/SystemLanguageSelector.tsx
 import React from "react"
-import type { Language, SystemLanguage } from "~types"
+import type { SystemLanguage } from "~types"
 import type { I18nTexts } from "~lib/i18n"
 
-interface LanguageSelectorProps {
-  selectedLanguage: Language
-  onLanguageChange: (language: Language) => void
+interface SystemLanguageSelectorProps {
+  selectedLanguage: SystemLanguage
+  onLanguageChange: (language: SystemLanguage) => void
   t: I18nTexts
 }
 
-const LanguageSelector: React.FC<LanguageSelectorProps> = ({
+const SystemLanguageSelector: React.FC<SystemLanguageSelectorProps> = ({
   selectedLanguage,
   onLanguageChange,
   t
 }) => {
-  const languages: { value: Language; label: string; flag: string }[] = [
+  const languages: { value: SystemLanguage; label: string; flag: string }[] = [
     { value: "zh-CN", label: t.languages['zh-CN'], flag: "🇨🇳" },
     { value: "zh-TW", label: t.languages['zh-TW'], flag: "🇹🇼" },
     { value: "en", label: t.languages['en'], flag: "🇺🇸" },
@@ -23,9 +23,9 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   ]
 
   return (
-    <div className="flex flex-col gap-2 mb-4 px-5">
+    <div className="flex flex-col gap-2 mb-4">
       <label className="text-sm font-black text-[var(--color-text)] uppercase tracking-wider">
-        {t.selectPrLanguage}
+        {t.selectSystemLanguage}
       </label>
       <div className="grid grid-cols-3 gap-2">
         {languages.map((lang) => (
@@ -52,4 +52,4 @@ const LanguageSelector: React.FC<LanguageSelectorProps> = ({
   )
 }
 
-export default LanguageSelector
+export default SystemLanguageSelector

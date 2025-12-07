@@ -1,12 +1,17 @@
 import React from "react"
+import type { I18nTexts } from "~lib/i18n"
 
-const PrResult: React.FC = () => {
+interface PrResultProps {
+  t: I18nTexts
+}
+
+const PrResult: React.FC<PrResultProps> = ({ t }) => {
   return (
-    <div className="bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 text-white rounded-2xl shadow-lg p-6 mx-5 my-6 text-center border border-gray-700">
-      <h2 className="text-xl font-bold mb-3 text-purple-400">
+    <div className="bg-[var(--color-bg)] text-[var(--color-text)] brutal-border shadow-[8px_8px_0px_0px_var(--color-border)] p-6 mx-5 my-6 text-center">
+      <h2 className="text-xl font-black uppercase mb-3 text-[var(--color-text)] border-b-[3px] border-[var(--color-border)] pb-2 inline-block">
         Pull Request Created 🎉
       </h2>
-      <p className="text-sm text-gray-300 mb-6">
+      <p className="text-sm font-medium mb-6 font-mono">
         Your pull request has been successfully generated and placed on GitHub.
         <br />
         You can now close this extension.
@@ -15,13 +20,13 @@ const PrResult: React.FC = () => {
       <div className="flex justify-center mt-4">
         <button
           onClick={() => window.close()}
-          className="bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition-all duration-200 shadow-md hover:shadow-lg">
+          className="brutal-btn bg-[var(--color-accent)] text-[var(--color-bg)] px-6 py-2 text-sm font-black uppercase tracking-wider">
           Close Extension
         </button>
       </div>
 
-      <p className="text-xs text-gray-500 mt-6">
-        Powered by <span className="text-purple-400 font-semibold">PrGPT</span>{" "}
+      <p className="text-xs font-bold mt-6 uppercase">
+        Powered by <span className="bg-[var(--color-text)] text-[var(--color-bg)] px-1">PrGPT</span>{" "}
         🚀
       </p>
     </div>
@@ -29,3 +34,4 @@ const PrResult: React.FC = () => {
 }
 
 export default PrResult
+

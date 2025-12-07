@@ -7,11 +7,10 @@ const Header: React.FC = () => {
   const { darkMode, toggleTheme } = useTheme()
 
   return (
-    // <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
-    <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-700">
+    <header className="flex items-center justify-between p-4 border-b-[3px] border-[var(--color-border)] bg-[var(--color-bg)]">
       <div className="flex items-center">
-        <div className="text-gradient font-bold text-2xl mr-2">PrGPT</div>
-        <span className="text-xs text-black BG-gray-200 dark:BG-gray-700 px-2 py-1 rounded-full">
+        <div className="font-black text-2xl mr-2 uppercase tracking-tighter">PrGPT</div>
+        <span className="text-xs font-bold border-[2px] border-[var(--color-border)] px-2 py-1 bg-[var(--color-accent)] text-[var(--color-bg)] uppercase">
           AI Powered
         </span>
       </div>
@@ -21,7 +20,7 @@ const Header: React.FC = () => {
           href="https://github.com/Muhsin-42"
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 px-4 py-2 BG-black text-white rounded-full shadow-md hover:BG-gray-900 transition-colors duration-200"
+          className="inline-flex items-center gap-2 px-4 py-2 brutal-btn text-sm"
           aria-label="GitHub profile">
           <svg
             className="w-5 h-5"
@@ -34,13 +33,13 @@ const Header: React.FC = () => {
               clipRule="evenodd"
             />
           </svg>
-          <span className="text-sm font-semibold tracking-wide">Muhsin-42</span>
+          <span className="font-bold tracking-wide">Muhsin-42</span>
         </a>
 
         {/* Theme Toggle Button */}
         <button
           onClick={toggleTheme}
-          className="p-2 rounded-full hover:BG-gray-200 dark:hover:BG-gray-700"
+          className="p-2 brutal-btn"
           aria-label="Toggle theme">
           {darkMode ? (
             <svg

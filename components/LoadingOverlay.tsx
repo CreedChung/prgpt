@@ -3,25 +3,23 @@ import React from "react"
 
 const LoadingOverlay: React.FC = () => {
   return (
-    <div className="fixed inset-0 bg-black/40 dark:bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
-      <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-xl flex flex-col items-center">
-        <div className="relative w-20 h-20 mb-4">
-          <div className="relative size-full rounded-full bg-gradient-to-b from-[#ba42ff] via-[#ba42ff] to-[#00e1ff] animate-spin blur-sm shadow-[0_-5px_20px_#ba42ff,0_5px_20px_#00e1ff]">
-            <div className="absolute inset-0 m-auto size-full rounded-full bg-gray-200 dark:bg-gray-700 blur-[10px]"></div>
-          </div>
+    <div className="fixed inset-0 bg-[var(--color-bg)] bg-opacity-90 flex items-center justify-center z-50">
+      <div className="bg-[var(--color-bg)] brutal-border p-8 shadow-[8px_8px_0px_0px_var(--color-border)] flex flex-col items-center max-w-sm w-full mx-4">
+        <div className="mb-6">
+          <div className="w-16 h-16 border-[4px] border-[var(--color-border)] border-t-[var(--color-accent)] animate-spin"></div>
         </div>
 
-        <div className="text-center">
-          <h3 className="text-lg font-medium text-gray-700 dark:text-gray-300 mb-1">
-            Generating PR Content
+        <div className="text-center w-full">
+          <h3 className="text-xl font-black uppercase text-[var(--color-text)] mb-2 tracking-wider">
+            Generating...
           </h3>
-          <p className="text-sm text-gray-500 dark:text-gray-400">
-            Analyzing commit messages with AI...
+          <p className="text-sm font-mono text-[var(--color-text)] mb-6 border-b-[2px] border-[var(--color-border)] pb-2 inline-block">
+            ANALYZING COMMITS
           </p>
         </div>
 
-        <div className="mt-4 w-48 bg-gray-200 dark:bg-gray-700 rounded-full h-1.5">
-          <div className="bg-blue-500 h-1.5 rounded-full animate-pulse w-full"></div>
+        <div className="w-full border-[3px] border-[var(--color-border)] h-6 p-[2px]">
+          <div className="bg-[var(--color-accent)] h-full w-full animate-pulse"></div>
         </div>
       </div>
     </div>
